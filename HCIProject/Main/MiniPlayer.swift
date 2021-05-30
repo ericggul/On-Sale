@@ -12,7 +12,8 @@ struct MiniPlayer: View {
     var animation: Namespace.ID
     @Binding var expand: Bool
     @Binding var product: Product
-    @State var volume: CGFloat = 0
+    @State var volume: Float = 0
+    @State var offset: CGFloat = 0
     
     var height = UIScreen.main.bounds.height/3
     
@@ -52,72 +53,15 @@ struct MiniPlayer: View {
                     Button(action: {}, label:{
                         Image(systemName: "play.fill")
                             .font(.title)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.primary)
                     })
-                    Button(action: {}, label:{
-                        Image(systemName: "play.fill")
-                            .font(.title)
-                            .foregroundColor(.red)
-                    })
+                    .padding(5)
                 }
                 
             }.padding(.horizontal)
             
             if expand{
                 ProductPlayer(product: $product, volume: $volume)
-                //Main Info Section
-//                HStack{
-//                    Image("apple")
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fill)
-//                        .frame(width: 140, height: 140)
-//                        .cornerRadius(5)
-//                        .matchedGeometryEffect(id: "Picture", in: animation)
-//                        .padding(.horizontal)
-//
-//                    VStack(alignment: .leading, spacing: 10){
-//                        Text("25분전")
-//                            .foregroundColor(.secondary)
-//                            .matchedGeometryEffect(id: "Time", in: animation)
-//                        Text("\(product.name)")
-//                            .font(.title)
-//                            .fontWeight(.bold)
-//                            .matchedGeometryEffect(id: "Label", in: animation)
-//                        Text("\(product.unitQuanity)\(product.unitMeasure.rawValue) \(product.discountPrice)원")
-//                            .matchedGeometryEffect(id: "Pricing", in: animation)
-//                        Text("\(product.origin)")
-//                    }
-//                }
-//
-//                //Sentence Section
-//
-//                ForEach(product.sentences){sentence in
-//                    SentenceRow(script: binding(for: sentence))
-//                }
-//
-//                HStack{
-//                    Button(action: {}, label:{
-//                        Image(systemName: "play.fill")
-//                            .font(.system(size: 100))
-//                            .foregroundColor(.blue)
-//                    })
-//                    Button(action: {}, label:{
-//                        Image(systemName: "play.fill")
-//                            .font(.system(size: 100))
-//                            .foregroundColor(.red)
-//                    })
-//                }
-//
-//                HStack{
-//                    Image(systemName: "speaker.fill")
-//                    Slider(value: $volume)
-//                    Image(systemName: "speaker.wave.2.fill")
-//                }
-//                .padding()
-//
-//                HStack{
-//
-//                }
             }
             
         }
@@ -132,6 +76,23 @@ struct MiniPlayer: View {
                 expand.toggle()
             }
         })
+        .offset(y: offset)
+        .gesture(DragGesture().onEnded(onended(value:)).onChanged(onchanged(value:)))
+    }
+    
+    func onchanged(value: DragGesture.Value){
+        if value.translation.height > 0 && expand{
+            offset = value.translation.height
+        }
+    }
+    
+    func onended(value: DragGesture.Value){
+        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.95, blendDuration: 0.95)){
+            if value.translation.height > height{
+                expand = false
+            }
+            offset = 0
+        }
     }
 }
 

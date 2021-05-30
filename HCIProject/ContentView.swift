@@ -22,6 +22,7 @@ struct ContentView: View {
   
     var body: some View {
             ZStack{
+                RadialGradient(gradient: Gradient(colors: [Color(red: 234.0/255.0,green: 244.0/255.0,blue: 244.0/255.0), Color(red: 255.0/255.0,green: 255.0/255.0,blue: 255.0/255.0)]), center: .center, startRadius: 100, endRadius: 500)
                 Main(products: $products)
                     .navigationTitle(expand ? "":"홈")
                 ForEach(filteredProduct){product in

@@ -17,17 +17,6 @@ struct InputMain: View {
             VStack{
                 InputTabs(productData: $datatoinherit)
                 
-                Button(action:
-                        {product.update(from: datatoinherit)
-                            product.name = datatoinherit.name
-                            thisProduct.name = datatoinherit.name
-                        }){
-                    Text("Button: Save")
-                }
-                Text(datatoinherit.name)
-                Text("Fired from InputMain: \(thisProduct.name)")
-                Text("Fired from Main: \(product.name)")
-                Text(product.origin)
 
                 NavigationLink(destination:
                                 SentenceList(product: $product)

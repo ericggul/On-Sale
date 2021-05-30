@@ -12,15 +12,17 @@ struct SentenceEditRow: View {
     
     @Binding var script: Script
     @ObservedObject var vm = SpeachViewModel()
-
-    @State private var playing = false
     
     var body: some View {
         HStack{
             Button(action: {
                 vm.isSpeaking.toggle()
-                speakUtterance()
-                
+                if(vm.isSpeaking){
+                    speakUtterance()
+                }
+                if(!vm.isSpeaking){
+            
+                }
             }){
                 Image(systemName: vm.isSpeaking ? "play.fill": "play")
                     .foregroundColor(vm.isSpeaking ? .green : .gray)
@@ -40,10 +42,10 @@ struct SentenceEditRow: View {
     }
     
     func speakUtterance(){
-        var splittedTextArray = script.sentence.components(separatedBy: " ")
+        let splittedTextArray = script.sentence.components(separatedBy: " ")
         
-        var utterance = AVSpeechUtterance(string: convertString(text: script.sentence))
-        utterance.rate = 0.4
+        let utterance = AVSpeechUtterance(string: convertString(text: script.sentence))
+        utterance.rate = 0.5
         utterance.pitchMultiplier = 0.7
         utterance.volume = 1
         

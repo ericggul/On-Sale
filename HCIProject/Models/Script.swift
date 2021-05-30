@@ -12,7 +12,7 @@ struct Script: Identifiable, Codable {
     let id: UUID
     var sentence: String
     var type : sentenceType
-    var isSelected: Bool = true
+    var isSelected: Bool
 
     init(id: UUID = UUID(), sentence: String, type: sentenceType, isSelected: Bool) {
         self.id = id
@@ -22,9 +22,11 @@ struct Script: Identifiable, Codable {
     }
 }
 
+
+
 func generateSentence(product: Product) -> [Script]{
     return(
-        [Script(sentence: "\(product.name) 사세요", type: sentenceType.i, isSelected: true),
+        [Script(sentence: "\(product.name) 사세요.", type: sentenceType.i, isSelected: true),
          Script(sentence: "\(product.origin)에서온 \(product.name) 맛있습니다.", type: sentenceType.i, isSelected: true),
          Script(sentence: "오늘 \(product.name) 과즙이 풍부합니다. 맛있어요.", type: sentenceType.i, isSelected: true),
          

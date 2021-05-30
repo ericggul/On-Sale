@@ -18,6 +18,8 @@ class SpeachViewModel: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
         utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
         self.synthesizer.speak(utterance)
     }
+    
+
 
     // MARK: AVSpeechSynthesizerDelegate
     internal func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
