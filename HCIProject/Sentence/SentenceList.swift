@@ -11,6 +11,11 @@ struct SentenceList: View {
     @Binding var product: Product
     @State private var scripts: [Script] = []
     
+    private var selectedScripts: [Script]{scripts.filter{
+        script in script.isSelected
+    }
+    }
+    
     var body: some View {
             VStack{
                 List{
@@ -34,10 +39,14 @@ struct SentenceList: View {
                         }
 //                        .onMove(perform: move)
                     }
+                    HStack{
+                        Image(systemName: "plus")
+                        Text("문장 추가하기")
+                    }
                 }
                 .listStyle(GroupedListStyle())
                 
-
+                Text("\(selectedScripts.count)개 문장 선택됨")
                 //To Fix: How to go back to main using navigation?
                 NavigationLink(
                     destination:

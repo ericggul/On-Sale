@@ -32,6 +32,7 @@
 		42A30E702653DF2E0003FDAD /* MiniPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E6C2653DF2E0003FDAD /* MiniPlayer.swift */; };
 		42A30E762653DF430003FDAD /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E732653DF430003FDAD /* Script.swift */; };
 		42A30E772653DF430003FDAD /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E742653DF430003FDAD /* Product.swift */; };
+		42A437782663C93500FCFFD6 /* SoundAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A437772663C93500FCFFD6 /* SoundAdjustment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		42A30E6C2653DF2E0003FDAD /* MiniPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniPlayer.swift; sourceTree = "<group>"; };
 		42A30E732653DF430003FDAD /* Script.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
 		42A30E742653DF430003FDAD /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		42A437772663C93500FCFFD6 /* SoundAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundAdjustment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 		42A30E2A2653DEFA0003FDAD /* HCIProject */ = {
 			isa = PBXGroup;
 			children = (
+				42A437742663C8F800FCFFD6 /* Sound */,
 				42A30E722653DF430003FDAD /* Models */,
 				42A30E2B2653DEFA0003FDAD /* HCIProjectApp.swift */,
 				42A30E2D2653DEFA0003FDAD /* ContentView.swift */,
@@ -225,6 +228,14 @@
 				42971F2826579054008E3B73 /* ProductData.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		42A437742663C8F800FCFFD6 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				42A437772663C93500FCFFD6 /* SoundAdjustment.swift */,
+			);
+			path = Sound;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -370,6 +381,7 @@
 				42971F2926579055008E3B73 /* ProductData.swift in Sources */,
 				42971F2B26579417008E3B73 /* Main.swift in Sources */,
 				42A30E682653DF250003FDAD /* TextRecognitionScan.swift in Sources */,
+				42A437782663C93500FCFFD6 /* SoundAdjustment.swift in Sources */,
 				42A30E6E2653DF2E0003FDAD /* TabBar.swift in Sources */,
 				4223EAA7265A3B07004AB327 /* SentenceEditRow.swift in Sources */,
 				42A30E2C2653DEFA0003FDAD /* HCIProjectApp.swift in Sources */,

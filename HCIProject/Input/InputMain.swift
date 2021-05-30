@@ -38,7 +38,7 @@ struct InputMain: View {
                             isActive = true
                         }
                 }
-            }.navigationTitle("품목 정보 입력")
+            }.navigationTitle("품목 정보 수정")
             .onAppear{datatoinherit = product.hmmm}
         }
     
