@@ -1,68 +1,36 @@
 import SwiftUI
 import AVFoundation
 
-
-struct ProductPlayer: View {
+struct SoundPage: View {
+    
+    @Environment(\.presentationMode) var presentationMode
     @Binding var product: Product
-    @Binding var fromMain: Bool
     @State private var volume: Float = 1
     @State private var adjustable: Float = 0.5
     @State private var testBoolean: Bool = false
     @State private var speed = 4
     @State private var pitch = 4
-
+    
+    @Binding var shouldPopToRootView: Bool
+    
+    
     var body: some View {
         VStack{
-            if(testBoolean){
-                Text("Boolean SPEAKING")
-            }
-            if(product.nowPlaying){
-                Text("Product SPEAKING")
-            }
             
-            HStack(spacing: 10){
-                Image("p1")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 140, height: 140)
-                    .cornerRadius(5)
-                    .padding(3)
-                
-                
-                Button(action: {
-                    speakUtterance()
-                }, label:{
-                    Image(systemName: product.nowPlaying ? "play.fill":"play")
-                        .font(.system(size: 100))
-                        .foregroundColor(.primary)
-                })
-                .padding(.trailing,20)
-                
-                
-                VStack(alignment: .leading, spacing: 10){
-                    Text("25분전")
-                        .foregroundColor(.secondary)
-                    
-                    Text("\(product.name)")
-                        .font(.title)
-                        .fontWeight(.bold)
-
-                    Text("\(product.unitQuanity)\(product.unitMeasure.rawValue) \(product.discountPrice)원")
-
-                    Text("\(product.origin)")
-                }
-            }
             
-            //Sentence Section
-                List{
-                    ForEach(product.sentences){sentence in
-                        SentenceEditRow(script: binding(for: sentence))
-                    }
-                }.listStyle(GroupedListStyle())
-                .padding(0)
+            Button(action: {
+                speakUtterance()
+            }, label:{
+                Image(systemName: testBoolean ? "play.fill":"play")
+                    .font(.system(size: 100))
+                    .foregroundColor(.primary)
+            })
+            .padding(10)
             
-                
-
+            Text(testBoolean ? "재생중": "음성 재생하기")
+                .foregroundColor( testBoolean ? .green : .primary)
+                .fontWeight(testBoolean ? .bold : .regular)
+            
 
             List{
                 Section(header: Text("음성 기본 빠르기/높이")){
@@ -92,19 +60,33 @@ struct ProductPlayer: View {
                         Text("볼륨 큼  ")
                     }
                 }
-
             }.listStyle(GroupedListStyle())
+            
+            Button(
+                "완료",
+                action: {
+                    self.shouldPopToRootView = false
+                }
+            )
+            .foregroundColor(.white)
+            .font(.title2)
+            .frame(width: UIScreen.main.bounds.width)
+            .padding(.vertical)
+            .padding(.horizontal)
+            .background(Color(.black))
+            .ignoresSafeArea()
         }
+        .navigationTitle("음성 수정")
     }
+    
+    let audioSession = AVAudioSession.sharedInstance()
     
     var filteredScript: [Script]{product.sentences.filter{
         script in script.isSelected
     }
     }
+
     
-
-    let audioSession = AVAudioSession.sharedInstance()
-
     func aggregateSentence() -> [String]{
         var outputsen : [String] = []
         for number in 0..<filteredScript.count{
@@ -114,8 +96,9 @@ struct ProductPlayer: View {
         return outputsen
     }
     
+    
+    
     func speakUtterance(){
-        product.nowPlaying = !product.nowPlaying
         testBoolean = !testBoolean
         let derivedSentences = aggregateSentence()
         for number in 0..<derivedSentences.count{
@@ -124,15 +107,17 @@ struct ProductPlayer: View {
             //default 0.5,
             utterance.rate = Float(Float.random(in: (0.5+(Float(speed)-3)*0.05-adjustable*0.2)..<(0.5+(Float(speed)-3)*0.05+adjustable*0.2)+0.01))
             //Pitch: 0.5-2, default 1
-            utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(speed)-3)*0.1-adjustable*0.25)..<(1+(Float(speed)-3)*0.1+adjustable*0.25)))
+            utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(pitch)-3)*0.1-adjustable*0.25)..<(1+(Float(pitch)-3)*0.1+adjustable*0.25)))
             //Volume: 0.1-1, default 1
-            utterance.volume = Float(Float.random(in: (1-adjustable*0.1)..<1))
+            utterance.volume = Float(Float.random(in: (1-adjustable*0.1)*volume..<volume))
             utterance.postUtteranceDelay = 0.5
-            
             speak(utterance, isPlaying: testBoolean)
         }
     }
+
+    var synthesizer = AVSpeechSynthesizer()
     
+
     func speak(_ utterance: AVSpeechUtterance, isPlaying: Bool) {
         utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
         if(!isPlaying){
@@ -149,23 +134,14 @@ struct ProductPlayer: View {
             }
         }
     }
-    
-    
-
-    var synthesizer = AVSpeechSynthesizer()
-    
-    
-    func speak(_ utterance: AVSpeechUtterance) {
-        utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
-        self.synthesizer.speak(utterance)
-    }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        guard !synthesizer.isSpeaking else { return }
+        guard !testBoolean else { return }
 
         let audioSession = AVAudioSession.sharedInstance()
         try? audioSession.setActive(false)
     }
+    
     
     
     
@@ -175,6 +151,7 @@ struct ProductPlayer: View {
         }
         return $product.sentences[scriptIndex]
     }
+    
     
     private func speedCalculator(speed: Int) -> String{
         var value: String = ""
@@ -199,13 +176,12 @@ struct ProductPlayer: View {
         
         return value
     }
-    
 }
 
-struct ProductPlayer_Previews: PreviewProvider {
+struct SoundPage_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView{
-            ProductPlayer(product: .constant(Product.initial[0]), fromMain: .constant(true))
-        }
+       SoundPage(product: .constant(Product.initial[0])
+                 ,shouldPopToRootView: .constant(false))
     }
 }
+

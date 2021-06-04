@@ -1,13 +1,13 @@
 
 import Foundation
 
-enum sentenceType: String, CaseIterable, Identifiable, Codable{
+enum sentenceType: String, CaseIterable, Hashable, Identifiable, Codable{
     case i = "informative"
     case p = "promotional"
     var id: String { self.rawValue }
 }
 
-struct Script: Identifiable, Codable {
+struct Script: Hashable, Identifiable, Codable {
     
     let id: UUID
     var sentence: String

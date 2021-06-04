@@ -5,6 +5,8 @@ struct Main: View {
     @State private var nowPlaying: Int = 0
     @State var search = ""
     
+    @Binding var isActive: Bool
+    
     var columns = Array(repeating: GridItem(.flexible(), spacing: 15), count: 2)
     
     var body: some View {
@@ -26,7 +28,8 @@ struct Main: View {
                     
                     //Add New Item Slot
                     
-                    NavigationLink(destination: InputMain(product: .constant(Product.initial[0]))) {
+                    NavigationLink(destination: InputMain(product: .constant(Product.initial[0]), isActive: $isActive),
+                        isActive: $isActive) {
                         VStack(alignment: .leading, spacing: 5){
                             
                             Text("지금")
@@ -50,11 +53,16 @@ struct Main: View {
                             Text("")
                                 .foregroundColor(.secondary)
                     }}
+                        .isDetailLink(false)
                     
                     ForEach(products){product in
                         NavigationLink(
-                            destination: InputMain(
-                                product: binding(for: product))){
+                            destination:
+                                ProductPlayer(
+                                product: binding(for: product), fromMain: .constant(true))
+//                        
+//                                InputMain(product: binding(for: product), isActive: $isActive)
+                        ){
                                 ProductCard(product: product)
                             }
                     }
@@ -74,7 +82,8 @@ struct Main: View {
 
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
-        Main(products: .constant(Product.initial))
+        Main(products: .constant(Product.initial)
+             ,isActive: .constant(false))
     }
 }
 

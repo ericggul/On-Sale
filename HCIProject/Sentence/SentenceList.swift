@@ -11,6 +11,8 @@ struct SentenceList: View {
     @Binding var product: Product
     @State private var scripts: [Script] = []
     
+    @Binding var isActive: Bool
+    
     private var selectedScripts: [Script]{scripts.filter{
         script in script.isSelected
     }
@@ -50,8 +52,10 @@ struct SentenceList: View {
                 //To Fix: How to go back to main using navigation?
                 NavigationLink(
                     destination:
-                        ContentView(products: .constant(Product.initial), saveAction: {})
-                        .onAppear{product.sentences = scripts}){
+                        SoundPage(product: $product
+                                  , shouldPopToRootView: $isActive)
+                        .onAppear{product.sentences = scripts})
+                    {
                     HStack(alignment: .bottom, content: {
                         Text("다음")
                             .foregroundColor(.white)
@@ -63,6 +67,7 @@ struct SentenceList: View {
                     .padding(.horizontal)
                     .background(Color(red: 21/255, green: 53/255, blue: 30/255))
                     .ignoresSafeArea()
+                    
                 }
             }
         .navigationTitle("문장 수정")
@@ -84,7 +89,8 @@ struct SentenceList: View {
 struct SentenceList_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            SentenceList(product: .constant(Product.initial[0]))
+            SentenceList(product: .constant(Product.initial[0])
+                         ,isActive: .constant(false))
         }
     }
 }

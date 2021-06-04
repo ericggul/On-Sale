@@ -10,8 +10,10 @@ import SwiftUI
 struct InputMain: View {
     @Binding var product: Product
     @State private var datatoinherit: Product.Data = Product.Data()
-    @State private var isActive = false
     @State private var thisProduct: Product = Product.initial[0]
+    @State private var updated = false
+    
+    @Binding var isActive: Bool
     
     var body: some View {
             VStack{
@@ -19,8 +21,9 @@ struct InputMain: View {
                 
 
                 NavigationLink(destination:
-                                SentenceList(product: $product)
-                                .onAppear{product.update(from: datatoinherit)}, isActive: $isActive
+                                SentenceList(product: $product
+                                             , isActive: $isActive)
+                                .onAppear{product.update(from: datatoinherit)}, isActive: $updated
                 ){
                         HStack(alignment: .bottom, content: {
                             Text("다음")
@@ -35,11 +38,13 @@ struct InputMain: View {
                         .ignoresSafeArea()
                         .onTapGesture {
                             product.update(from: datatoinherit)
-                            isActive = true
+                            updated = true
                         }
                 }
             }.navigationTitle("품목 정보 수정")
-            .onAppear{datatoinherit = product.hmmm}
+            .onAppear{
+                datatoinherit = product.hmmm
+            }
         }
     
 
@@ -48,7 +53,7 @@ struct InputMain: View {
 struct InputMain_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            InputMain(product: .constant(Product.initial[0]))
+            InputMain(product: .constant(Product.initial[0]) ,isActive: .constant(false))
         }
     }
 }

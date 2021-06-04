@@ -32,8 +32,12 @@ class ProductData: ObservableObject {
                 #endif
                 return
             }
+            
+            
+            
+
             guard let product = try? JSONDecoder().decode([Product].self, from: data) else{
-                fatalError("Can't decode saved product data.")
+                fatalError("What")
             }
             
             DispatchQueue.main.async{

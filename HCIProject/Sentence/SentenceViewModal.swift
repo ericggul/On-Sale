@@ -42,4 +42,3 @@ class SpeachViewModel: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
         self.isSpeaking = true
     }
 }
-

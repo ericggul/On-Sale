@@ -12,10 +12,11 @@ struct ContentView: View {
     @Binding var products: [Product]
     @Environment(\.scenePhase) private var scenePhase
     @State private var expand: Bool = false
+    @State private var isActive: Bool = false
         
     var filteredProduct: [Product]{products.filter{
         product in product.nowPlaying
-    }
+        }
     }
     
     let saveAction: () -> Void
@@ -23,8 +24,9 @@ struct ContentView: View {
     var body: some View {
             ZStack{
                 RadialGradient(gradient: Gradient(colors: [Color(red: 234.0/255.0,green: 244.0/255.0,blue: 244.0/255.0), Color(red: 255.0/255.0,green: 255.0/255.0,blue: 255.0/255.0)]), center: .center, startRadius: 100, endRadius: 500)
-                Main(products: $products)
+                Main(products: $products, isActive: $isActive)
                     .navigationTitle(expand ? "":"홈")
+  
                 ForEach(filteredProduct){product in
                     TabBar(expand: $expand, product: binding(for: product))
                 }

@@ -1,12 +1,14 @@
 import Foundation
 
-enum Measure: String, CaseIterable, Identifiable, Codable{
+enum Measure:  String, CaseIterable, Hashable, Identifiable, Codable{
     case g = "g"
     case qty = "개"
     var id: String { self.rawValue }
 }
 
-struct Product: Identifiable, Codable {
+struct Product:  Hashable, Identifiable, Codable {
+
+    
     
     let id: UUID
     var name: String
@@ -17,11 +19,18 @@ struct Product: Identifiable, Codable {
     var origin: String
     var sentences: [Script]
     var nowPlaying: Bool
-//    var speechVariance: Double = 1.0
-//    var speechVolume: Double = 1.0
+    
+    //Voice Related
+//    var volume: String
+//    var adjustable: Float
+//    var speed: Int
+//    var pitch: Int
     
     
-    init(id: UUID = UUID(), name: String, initialPrice: String, discountPrice: String, unitQuanity: String, unitMeasure: Measure, origin: String, sentences: [Script] = [], nowPlaying: Bool) {
+    init(id: UUID = UUID(), name: String, initialPrice: String, discountPrice: String, unitQuanity: String, unitMeasure: Measure, origin: String, sentences: [Script] = [], nowPlaying: Bool
+//         ,volume: String
+//        , adjustable: Float, speed: Int, pitch: Int
+        ) {
         self.id = id
         self.name = name
         self.initialPrice = initialPrice
@@ -31,8 +40,14 @@ struct Product: Identifiable, Codable {
         self.origin = origin
         self.sentences = sentences
         self.nowPlaying = nowPlaying
-//        self.speechVariance = speechVariance
-//        self.speechVolume = speechVolume
+        
+        
+//        self.volume = volume
+//        self.adjustable = adjustable
+//        self.speed = speed
+//        self.pitch = pitch
+        
+
     }
 }
 
@@ -45,10 +60,22 @@ extension Product{
                         [Script(sentence: "삼겹살, 항정살, 가브리살, 무한제공.", type: sentenceType.i, isSelected: true),
                          Script(sentence: "삼겹살, 항정살, 가브리살, 제공.", type: sentenceType.p, isSelected: true),
                          Script(sentence: "삼겹살, 항정살, 가브리제공.", type: sentenceType.i, isSelected: true)],
-                    nowPlaying: true),
-            Product(name: "올림픽", initialPrice: "27000", discountPrice: "20000", unitQuanity: "100", unitMeasure : Measure.qty, origin: "캘리포니아", nowPlaying: false),
-            Product(name: "구렛나루", initialPrice: "32000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.qty, origin: "캘리포니아", nowPlaying: false),
-            Product(name: "사과", initialPrice: "30000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.g, origin: "캘리포니아", nowPlaying: false)
+                    nowPlaying: true
+//                    , volume: "1"
+//                    ,adjustable: 0.5, speed: 3, pitch: 3
+            ),
+            Product(name: "올림픽", initialPrice: "27000", discountPrice: "20000", unitQuanity: "100", unitMeasure : Measure.qty, origin: "캘리포니아", nowPlaying: false
+//                    , volume:"1"
+//                   , adjustable: 0.5, speed: 3, pitch: 3
+            ),
+            Product(name: "구렛나루", initialPrice: "32000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.qty, origin: "캘리포니아", nowPlaying: false
+//                    , volume: "1"
+//                    ,adjustable: 0.5, speed: 3, pitch: 3
+            ),
+            Product(name: "사과", initialPrice: "30000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.g, origin: "캘리포니아", nowPlaying: false
+//                    , volume:"1"
+//                   , adjustable: 0.5, speed: 3, pitch: 3
+            )
         ]
     }
 }
@@ -63,13 +90,22 @@ extension Product {
         var unitQuanity: String = "100"
         var unitMeasure: Measure = Measure.g
         var origin: String = "대한민국"
-        var sentences: [Script] = []
+//        var sentences: [Script] = []
         var nowPlaying: Bool = false
-
+        
+//        var volume: String = "1"
+//        var adjustable: Float = 0.5
+//        var speed: Int = 3
+//        var pitch: Int = 3
     }
 
     var hmmm: Data {
-        return Data(name: name, initialPrice: initialPrice, discountPrice: discountPrice, unitQuanity: unitQuanity, unitMeasure: unitMeasure, origin: origin, sentences: sentences, nowPlaying: nowPlaying)
+        return Data(name: name, initialPrice: initialPrice, discountPrice: discountPrice, unitQuanity: unitQuanity, unitMeasure: unitMeasure, origin: origin,
+//                    sentences: sentences,
+                    nowPlaying: nowPlaying
+//             ,      volume: volume
+//            adjustable: adjustable, speed: speed, pitch: pitch
+        )
     }
 
     mutating func update(from data: Data) {
@@ -79,9 +115,12 @@ extension Product {
         unitQuanity = data.unitQuanity
         unitMeasure = data.unitMeasure
         origin = data.origin
-        sentences = data.sentences
+//        sentences = data.sentences
         nowPlaying = data.nowPlaying
+        
+//        volume = data.volume
+//        adjustable = data.adjustable
+//        speed = data.speed
+//        pitch = data.pitch
     }
 }
-
-

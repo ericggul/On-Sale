@@ -61,16 +61,15 @@ struct MiniPlayer: View {
             }.padding(.horizontal)
             
             if expand{
-                ProductPlayer(product: $product, volume: $volume)
+                MiniPlayerProduct(product: $product, fromMain: .constant(false))
             }
             
         }
-        .frame(height: expand ? UIScreen.main.bounds.height : 105)
+        .frame(height: expand ? UIScreen.main.bounds.height : 100)
         .background(
             BlurView()
         )
-        .offset(y: expand ? 0: UIScreen.main.bounds.height/2-50)
-        .ignoresSafeArea()
+        .offset(y: expand ? 0: UIScreen.main.bounds.height/2-100)
         .onTapGesture(perform: {
             withAnimation(.spring()){
                 expand.toggle()

@@ -1,46 +1,87 @@
-//
-//  SoundAdjustment.swift
-//  HCIProject
-//
-//  Created by Jeong Yoon Choi on 5/30/21.
-//
-
 import SwiftUI
 import AVFoundation
 
-struct SoundAdjustment: View {
-    
+
+struct MiniPlayerProduct: View {
     @Binding var product: Product
+    @Binding var fromMain: Bool
     @State private var volume: Float = 1
     @State private var adjustable: Float = 0.5
-    @State private var testBoolean: Bool = false
     @State private var speed = 4
     @State private var pitch = 4
     
+    //Detail View Presented?
+    @State private var isPresented: Bool = false
+
     
     var body: some View {
         VStack{
             
+            if !fromMain{
+                Capsule()
+                    .fill(Color.gray)
+                    .frame(width: 130, height: 4)
+                    .padding(5)
+            }
+
+            
+            HStack(spacing: 10){
+                
+                
+                Image("p1")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 140, height: 140)
+                    .cornerRadius(5)
+                    .padding(3)
+                
                 Button(action: {
                     speakUtterance()
-                    product.nowPlaying = !product.nowPlaying
-                    testBoolean = !testBoolean
+                 
                 }, label:{
-                    Image(systemName: testBoolean ? "play.fill":"play")
+                    Image(systemName: product.nowPlaying ? "play.fill":"play")
                         .font(.system(size: 100))
                         .foregroundColor(.primary)
                 })
-                .padding(10)
-            Text("음성재생")
+                .padding(.trailing,20)
+                
+                
+                VStack(alignment: .leading, spacing: 10){
+                    Text("25분전")
+                        .foregroundColor(.secondary)
+
+                    Text("\(product.name)")
+                        .font(.title)
+                        .fontWeight(.bold)
+
+                    Text("\(product.unitQuanity)\(product.unitMeasure.rawValue) \(product.discountPrice)원")
+
+                    Text("\(product.origin)")
+                }
+            }
+            
+            //Sentence Section
+                List{
+                        ForEach(product.sentences){sentence in
+                            SentenceRow(script: binding(for: sentence))
+                        }
+//                        .onMove(perform: move)
+                }.listStyle(GroupedListStyle())
+                .padding(0)
+            
+                
+
 
             List{
                 Section(header: Text("음성 기본 빠르기/높이")){
                     HStack{
-                        Stepper("음성 빠르기: \(speedCalculator(speed: speed))", value: $speed, in: 1...5)
+                        Text("음성 빠르기: \(speedCalculator(speed: speed))")
+                        Spacer()
                         Text("\(speed)/5")
                     }
                     HStack{
-                        Stepper("음성 높이: \(pitchCalculator(pitch: pitch))", value: $pitch, in: 1...5)
+                        Text("음성 높이: \(pitchCalculator(pitch: pitch))")
+                        Spacer()
                         Text("\(pitch)/5")
                     }
                 }
@@ -63,34 +104,28 @@ struct SoundAdjustment: View {
                 }
 
             }.listStyle(GroupedListStyle())
-            
-            NavigationLink(
-                destination:
-                    ContentView(products: .constant(Product.initial), saveAction: {})
-                    ){
-                HStack(alignment: .bottom, content: {
-                    Text("완료")
-                        .foregroundColor(.white)
-                        .font(.title2)
-                        .bold()
-                })
-                .frame(width: UIScreen.main.bounds.width)
-                .padding(.vertical)
-                .padding(.horizontal)
-                .background(Color(red: 21/255, green: 53/255, blue: 30/255))
-                .ignoresSafeArea()
+//            .navigationBarItems(trailing: Button("Edit"){
+//                isPresented = true
+//            })
+            .sheet(isPresented: $isPresented){
+                NavigationView{
+                    ProductPlayer(product: $product, fromMain: .constant(false))
+                }
             }
         }
-        .navigationTitle("음성 수정")
-        .listRowInsets(EdgeInsets())
     }
-    let audioSession = AVAudioSession.sharedInstance()
-//    try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .duckOthers)
     
     var filteredScript: [Script]{product.sentences.filter{
         script in script.isSelected
     }
     }
+    
+//    func move(source: IndexSet, destination: Int){
+//        product.sentences.move(fromOffsets: source, toOffset: destination)
+//    }
+    
+    let audioSession = AVAudioSession.sharedInstance()
+//    try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .duckOthers)
 
     
     func aggregateSentence() -> [String]{
@@ -103,6 +138,8 @@ struct SoundAdjustment: View {
     }
     
     func speakUtterance(){
+        
+        product.nowPlaying = !product.nowPlaying
         let derivedSentences = aggregateSentence()
         for number in 0..<derivedSentences.count{
             let utterance = AVSpeechUtterance(string: derivedSentences[number])
@@ -112,10 +149,10 @@ struct SoundAdjustment: View {
             //Pitch: 0.5-2, default 1
             utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(speed)-3)*0.1-adjustable*0.25)..<(1+(Float(speed)-3)*0.1+adjustable*0.25)))
             //Volume: 0.1-1, default 1
-            utterance.volume = Float(Float.random(in: (1-adjustable*0.1)*volume..<volume))
+            utterance.volume = Float(Float.random(in: (1-adjustable*0.1)..<1))
             utterance.postUtteranceDelay = 0.5
             
-            speak(utterance)
+            speak(utterance, isPlaying: product.nowPlaying)
         }
     }
     
@@ -124,9 +161,21 @@ struct SoundAdjustment: View {
     var synthesizer = AVSpeechSynthesizer()
     
     
-    func speak(_ utterance: AVSpeechUtterance) {
+    func speak(_ utterance: AVSpeechUtterance, isPlaying: Bool) {
         utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
-        self.synthesizer.speak(utterance)
+        if(!isPlaying){
+            if(synthesizer.isSpeaking){
+                self.synthesizer.pauseSpeaking(at: AVSpeechBoundary.immediate)
+                print("fired");
+            }
+        }
+        else{
+            if(synthesizer.isPaused){
+                self.synthesizer.continueSpeaking();
+            } else{
+                self.synthesizer.speak(utterance)
+            }
+        }
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
@@ -135,6 +184,8 @@ struct SoundAdjustment: View {
         let audioSession = AVAudioSession.sharedInstance()
         try? audioSession.setActive(false)
     }
+    
+    
     
     private func binding(for script: Script) -> Binding<Script> {
         guard let scriptIndex = product.sentences.firstIndex(where: { $0.id == script.id }) else {
@@ -166,12 +217,14 @@ struct SoundAdjustment: View {
         
         return value
     }
+    
 }
 
-struct SoundAdjustment_Previews: PreviewProvider {
+struct MiniPlayerProduct_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            SoundAdjustment(product: .constant(Product.initial[0]))
+            MiniPlayerProduct(product: .constant(Product.initial[0]), fromMain: .constant(true))
         }
     }
 }
+

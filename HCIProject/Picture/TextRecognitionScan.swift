@@ -24,9 +24,9 @@ struct TextRecognition: View {
                 HStack {
                     Spacer()
                     
-                    NavigationLink(destination: InputMain(product: $product)){
-                        Text("Next")
-                    }
+//                    NavigationLink(destination: InputMain(product: $product)){
+//                        Text("Next")
+//                    }
                     
                     Button(action: {
                         self.showingScanningView = true

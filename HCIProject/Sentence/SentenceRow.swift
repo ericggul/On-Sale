@@ -26,10 +26,13 @@ struct SentenceRow: View {
                     .foregroundColor(vm.isSpeaking ? .green : .gray)
                     .font(.title)
             }
-            Toggle(isOn: $script.isSelected){
-                Text(script.sentence)
-                    .foregroundColor(.primary)
-            }
+            Text(script.sentence)
+            Spacer()
+            Text(script.isSelected ?
+                "On" : "Off")
+                .foregroundColor(script.isSelected ? .green : .gray)
+                .bold()
+
         }
     }
     
