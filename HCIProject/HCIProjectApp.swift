@@ -5,6 +5,7 @@ struct HCIProjectApp: App {
     
     @ObservedObject private var data = ProductData()
     @State private var products = Product.initial
+    @State private var onLive = false
     var body: some Scene {
         WindowGroup {
             NavigationView {

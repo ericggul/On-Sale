@@ -10,7 +10,8 @@ import SwiftUI
 struct SentenceList: View {
     @Binding var product: Product
     @State private var scripts: [Script] = []
-    
+    @State private var datatoinherit: Product.Data = Product.Data()
+    @State private var updated = false
     @Binding var isActive: Bool
     
     private var selectedScripts: [Script]{scripts.filter{

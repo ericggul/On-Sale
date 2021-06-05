@@ -17,15 +17,6 @@ struct SentenceRow: View {
     
     var body: some View {
         HStack{
-            Button(action: {
-                vm.isSpeaking.toggle()
-                speakUtterance()
-                
-            }){
-                Image(systemName: vm.isSpeaking ? "play.fill": "play")
-                    .foregroundColor(vm.isSpeaking ? .green : .gray)
-                    .font(.title)
-            }
             Text(script.sentence)
             Spacer()
             Text(script.isSelected ?

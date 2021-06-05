@@ -15,7 +15,10 @@ struct MiniPlayer: View {
     @State var volume: Float = 0
     @State var offset: CGFloat = 0
     
+    @Binding var isActive: Bool
+    
     var height = UIScreen.main.bounds.height/3
+    
     
     var body: some View {
         VStack{
@@ -61,15 +64,15 @@ struct MiniPlayer: View {
             }.padding(.horizontal)
             
             if expand{
-                MiniPlayerProduct(product: $product, fromMain: .constant(false))
+                MiniPlayerProduct(product: $product, fromMain: .constant(false),  isActive: $isActive)
             }
             
         }
-        .frame(height: expand ? UIScreen.main.bounds.height : 100)
+        .frame(height: expand ? UIScreen.main.bounds.size.height : 100)
         .background(
             BlurView()
         )
-        .offset(y: expand ? 0: UIScreen.main.bounds.height/2-100)
+        .offset(y: expand ? 0: UIScreen.main.bounds.size.height/2-100)
         .onTapGesture(perform: {
             withAnimation(.spring()){
                 expand.toggle()
@@ -82,6 +85,10 @@ struct MiniPlayer: View {
     func onchanged(value: DragGesture.Value){
         if value.translation.height > 0 && expand{
             offset = value.translation.height
+        }
+        if value.translation.height > 0 && !expand {
+            print("scrolled")
+            offset =  250
         }
     }
     

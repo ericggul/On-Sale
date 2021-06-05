@@ -10,6 +10,8 @@ struct ProductPlayer: View {
     @State private var testBoolean: Bool = false
     @State private var speed = 4
     @State private var pitch = 4
+    
+    @Binding var isActive: Bool
 
     var body: some View {
         VStack{
@@ -24,7 +26,7 @@ struct ProductPlayer: View {
                 Image("p1")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 140, height: 140)
+                    .frame(width: 100, height: 100)
                     .cornerRadius(5)
                     .padding(3)
                 
@@ -33,7 +35,7 @@ struct ProductPlayer: View {
                     speakUtterance()
                 }, label:{
                     Image(systemName: product.nowPlaying ? "play.fill":"play")
-                        .font(.system(size: 100))
+                        .font(.system(size: 80))
                         .foregroundColor(.primary)
                 })
                 .padding(.trailing,20)
@@ -42,7 +44,6 @@ struct ProductPlayer: View {
                 VStack(alignment: .leading, spacing: 10){
                     Text("25분전")
                         .foregroundColor(.secondary)
-                    
                     Text("\(product.name)")
                         .font(.title)
                         .fontWeight(.bold)
@@ -61,7 +62,7 @@ struct ProductPlayer: View {
                 }.listStyle(GroupedListStyle())
                 .padding(0)
             
-                
+            
 
 
             List{
@@ -71,9 +72,12 @@ struct ProductPlayer: View {
                         Text("\(speed)/5")
                     }
                     HStack{
-                        Stepper("음성 높이: \(pitchCalculator(pitch: pitch))", value: $pitch, in: 1...5)
-                        Text("\(pitch)/5")
+                        Stepper("음성 높이: \(pitchCalculator(pitch: product.pitch))", value: $product.pitch, in: 1...5)
+                        Text("\(product.pitch)/5")
+                        
                     }
+                    TextField("wet", text: $product.name)
+                    Text(product.name)
                 }
                 
                 Section(header: Text("음성 변화/볼륨")){
@@ -95,6 +99,9 @@ struct ProductPlayer: View {
 
             }.listStyle(GroupedListStyle())
         }
+        .navigationBarItems(trailing: HStack{
+            EditButton(destination: InputMain(product: $product, isActive: .constant(false)))
+        })
     }
     
     var filteredScript: [Script]{product.sentences.filter{
@@ -124,7 +131,7 @@ struct ProductPlayer: View {
             //default 0.5,
             utterance.rate = Float(Float.random(in: (0.5+(Float(speed)-3)*0.05-adjustable*0.2)..<(0.5+(Float(speed)-3)*0.05+adjustable*0.2)+0.01))
             //Pitch: 0.5-2, default 1
-            utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(speed)-3)*0.1-adjustable*0.25)..<(1+(Float(speed)-3)*0.1+adjustable*0.25)))
+            utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(product.pitch)-3)*0.1-adjustable*0.25)..<(1+(Float(product.pitch)-3)*0.1+adjustable*0.25)))
             //Volume: 0.1-1, default 1
             utterance.volume = Float(Float.random(in: (1-adjustable*0.1)..<1))
             utterance.postUtteranceDelay = 0.5
@@ -199,13 +206,23 @@ struct ProductPlayer: View {
         
         return value
     }
+
     
+}
+
+struct EditButton<Destination: View>: View{
+    var destination: Destination
+    var body: some View {
+        NavigationLink(destination: self.destination) {
+            Text("수정하기")
+        }
+    }
 }
 
 struct ProductPlayer_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            ProductPlayer(product: .constant(Product.initial[0]), fromMain: .constant(true))
+            ProductPlayer(product: .constant(Product.initial[0]), fromMain: .constant(true),  isActive: .constant(false))
         }
     }
 }

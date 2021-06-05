@@ -12,7 +12,6 @@ struct InputMain: View {
     @State private var datatoinherit: Product.Data = Product.Data()
     @State private var thisProduct: Product = Product.initial[0]
     @State private var updated = false
-    
     @Binding var isActive: Bool
     
     var body: some View {
@@ -41,19 +40,20 @@ struct InputMain: View {
                             updated = true
                         }
                 }
-            }.navigationTitle("품목 정보 수정")
+            }
+            .navigationTitle("품목 정보 수정")
             .onAppear{
                 datatoinherit = product.hmmm
             }
         }
-    
-
 }
+
+
 
 struct InputMain_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            InputMain(product: .constant(Product.initial[0]) ,isActive: .constant(false))
+            InputMain(product: .constant(Product.initial[0]),isActive: .constant(false))
         }
     }
 }

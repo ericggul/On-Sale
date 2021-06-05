@@ -12,6 +12,8 @@ struct MiniPlayerProduct: View {
     
     //Detail View Presented?
     @State private var isPresented: Bool = false
+    
+    @Binding var isActive: Bool
 
     
     var body: some View {
@@ -21,7 +23,8 @@ struct MiniPlayerProduct: View {
                 Capsule()
                     .fill(Color.gray)
                     .frame(width: 130, height: 4)
-                    .padding(5)
+                    .padding(30)
+                    .padding(.bottom, 10)
             }
 
             
@@ -31,7 +34,7 @@ struct MiniPlayerProduct: View {
                 Image("p1")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 140, height: 140)
+                    .frame(width: 100, height: 100)
                     .cornerRadius(5)
                     .padding(3)
                 
@@ -40,7 +43,7 @@ struct MiniPlayerProduct: View {
                  
                 }, label:{
                     Image(systemName: product.nowPlaying ? "play.fill":"play")
-                        .font(.system(size: 100))
+                        .font(.system(size: 80))
                         .foregroundColor(.primary)
                 })
                 .padding(.trailing,20)
@@ -62,18 +65,18 @@ struct MiniPlayerProduct: View {
             
             //Sentence Section
                 List{
+                    
                         ForEach(product.sentences){sentence in
                             SentenceRow(script: binding(for: sentence))
                         }
 //                        .onMove(perform: move)
+                
                 }.listStyle(GroupedListStyle())
                 .padding(0)
             
-                
-
 
             List{
-                Section(header: Text("음성 기본 빠르기/높이")){
+                Section(header: Text("문장 설정")){
                     HStack{
                         Text("음성 빠르기: \(speedCalculator(speed: speed))")
                         Spacer()
@@ -84,9 +87,6 @@ struct MiniPlayerProduct: View {
                         Spacer()
                         Text("\(pitch)/5")
                     }
-                }
-                
-                Section(header: Text("음성 변화/볼륨")){
                     HStack{
                         Text("변화 없음")
                         Image(systemName: "minus")
@@ -109,7 +109,7 @@ struct MiniPlayerProduct: View {
 //            })
             .sheet(isPresented: $isPresented){
                 NavigationView{
-                    ProductPlayer(product: $product, fromMain: .constant(false))
+                    ProductPlayer(product: $product, fromMain: .constant(false), isActive: $isActive)
                 }
             }
         }
@@ -223,7 +223,7 @@ struct MiniPlayerProduct: View {
 struct MiniPlayerProduct_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            MiniPlayerProduct(product: .constant(Product.initial[0]), fromMain: .constant(true))
+            MiniPlayerProduct(product: .constant(Product.initial[0]), fromMain: .constant(true),  isActive: .constant(false))
         }
     }
 }

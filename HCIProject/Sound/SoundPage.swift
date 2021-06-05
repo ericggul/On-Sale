@@ -65,6 +65,10 @@ struct SoundPage: View {
             Button(
                 "완료",
                 action: {
+                    product.volume = volume
+                    product.adjustable = adjustable
+                    product.speed = speed
+                    product.pitch = pitch
                     self.shouldPopToRootView = false
                 }
             )
@@ -77,6 +81,13 @@ struct SoundPage: View {
             .ignoresSafeArea()
         }
         .navigationTitle("음성 수정")
+        .onAppear{
+            volume = product.volume
+            adjustable = product.adjustable
+            speed = product.speed
+            pitch = product.pitch
+            
+        }
     }
     
     let audioSession = AVAudioSession.sharedInstance()
