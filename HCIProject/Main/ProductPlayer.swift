@@ -26,13 +26,6 @@ struct ProductPlayer: View {
 
     var body: some View {
         VStack{
-            if(testBoolean){
-                Text("Boolean SPEAKING")
-            }
-            if(product.nowPlaying){
-                Text("Product SPEAKING")
-            }
-            
             HStack(spacing: 10){
                 Image(product.name)
                     .resizable()
@@ -45,7 +38,7 @@ struct ProductPlayer: View {
                 Button(action: {
                     speakUtterance()
                 }, label:{
-                    Image(systemName: product.nowPlaying ? "play.fill":"play")
+                    Image(systemName: testBoolean ? "play.fill":"play")
                         .font(.system(size: 80))
                         .foregroundColor(.primary)
                 })
@@ -89,7 +82,7 @@ struct ProductPlayer: View {
                     }
                 }
                 
-                Section(header: Text("음성 변화/볼륨")){
+                Section(header: Text("음성 변화/문장간 간격")){
                     HStack{
                         Text("변화 없음")
                         Image(systemName: "minus")
@@ -98,11 +91,11 @@ struct ProductPlayer: View {
                         Text("변화 많음")
                     }
                     HStack{
-                        Text("볼륨 작음")
+                        Text("간격 김  ")
                         Image(systemName: "speaker.fill")
                         Slider(value: $volume)
                         Image(systemName: "speaker.wave.2.fill")
-                        Text("볼륨 큼  ")
+                        Text("간격 짧음")
                     }
                 }
 
@@ -114,6 +107,7 @@ struct ProductPlayer: View {
         .onAppear(
             perform:{
                 product.sentences = generateSentence(product: product)
+                testBoolean = product.nowPlaying
             }
         )
     }
@@ -164,16 +158,13 @@ struct ProductPlayer: View {
     }
 
     func aggregateSentence() -> [String]{
-        let t = nonRedundantRandomGenerator(number: nonFillerScript.count, length: nonFillerScript.count*1000)
+        let t = nonRedundantRandomGenerator(number: filteredScript.count, length: filteredScript.count*1000)
         var outputsen : [String] = []
         
-        
-        for number in 0..<nonFillerScript.count*1000{
+        for number in 0..<filteredScript.count*1000{
             
-            var thisString = wordChange(sentence: nonFillerScript[t[number]].sentence)
-            
-            let randomFiller = Int.random(in: 0..<fillerScript.count)
-            thisString = fillerScript[randomFiller].sentence + thisString
+            var thisString = wordChange(sentence: filteredScript[t[number]].sentence)
+    
             
             if 2 == Int.random(in: 0..<4) {
                 thisString = stepWords[0] + thisString
@@ -182,27 +173,24 @@ struct ProductPlayer: View {
             } else if 2 == Int.random(in: 0..<8) {
                 thisString = stepWords[2] + thisString
             }
-                    
             outputsen.append(thisString)
         }
         return outputsen
     }
     
     func speakUtterance(){
-        product.nowPlaying = !product.nowPlaying
+//
+//        product.nowPlaying = !product.nowPlaying
         testBoolean = !testBoolean
         let derivedSentences = aggregateSentence()
+        print(derivedSentences)
         for number in 0..<derivedSentences.count{
             let utterance = AVSpeechUtterance(string: derivedSentences[number])
-            
             //default 0.5,
             utterance.rate = Float(Float.random(in: (0.45+(Float(speed)-3)*0.05-adjustable*0.12)..<(0.45+(Float(speed)-3)*0.05+adjustable*0.1)+0.01))
             //Pitch: 0.5-2, default 1
             utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(product.pitch)-3)*0.1-adjustable*0.25)..<(1+(Float(product.pitch)-3)*0.1+adjustable*0.25)))
-            //Volume: 0.1-1, default 1
-            utterance.volume = Float(Float.random(in: (1-adjustable*0.1)..<1))
-            utterance.postUtteranceDelay = 0.5
-            
+            utterance.postUtteranceDelay = Double(Float.random(in: (3-adjustable*1)*volume..<(3+adjustable*1)*volume))
             speak(utterance, isPlaying: testBoolean)
         }
     }
@@ -212,10 +200,10 @@ struct ProductPlayer: View {
     
     func speak(_ utterance: AVSpeechUtterance, isPlaying: Bool) {
         utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
-        if(isPlaying){
+        if(!isPlaying){
             if(synthesizer.isSpeaking){
                 self.synthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
-                print("fired");
+                print("fired")
             }
         }
         else{
