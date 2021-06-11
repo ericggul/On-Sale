@@ -9,6 +9,8 @@ import SwiftUI
 import AVFoundation
 
 struct ContentView: View {
+    @Namespace var animation
+    
     @Binding var products: [Product]
     @Environment(\.scenePhase) private var scenePhase
     @State private var expand: Bool = false
@@ -69,7 +71,7 @@ struct ContentView: View {
                 
                 VStack{
                     ForEach(filteredProduct){product in
-                        TabBar(expand: $expand, product: binding(for: product), isActive: $isActive)
+                        MiniPlayer(animation: animation, expand: $expand, product: binding(for: product), isActive: $isActive)
                     }
                 }
 

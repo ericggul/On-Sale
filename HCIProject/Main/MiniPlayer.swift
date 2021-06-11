@@ -22,7 +22,7 @@ struct MiniPlayer: View {
     
     var body: some View {
         VStack{
-            HStack(spacing: 15){
+            HStack(alignment: .bottom, spacing: 15){
                 
                 if expand{Spacer(minLength: 0)}
                 
@@ -78,7 +78,6 @@ struct MiniPlayer: View {
                 expand.toggle()
             }
         })
-        .offset(y: offset)
         .gesture(DragGesture().onEnded(onended(value:)).onChanged(onchanged(value:)))
     }
     

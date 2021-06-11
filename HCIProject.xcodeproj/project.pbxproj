@@ -34,7 +34,6 @@
 		42A30E662653DF250003FDAD /* ScanDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E622653DF250003FDAD /* ScanDelegate.swift */; };
 		42A30E672653DF250003FDAD /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E632653DF250003FDAD /* ScanDocumentView.swift */; };
 		42A30E682653DF250003FDAD /* TextRecognitionScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E642653DF250003FDAD /* TextRecognitionScan.swift */; };
-		42A30E6E2653DF2E0003FDAD /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E6A2653DF2E0003FDAD /* TabBar.swift */; };
 		42A30E6F2653DF2E0003FDAD /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E6B2653DF2E0003FDAD /* BlurView.swift */; };
 		42A30E702653DF2E0003FDAD /* MiniPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E6C2653DF2E0003FDAD /* MiniPlayer.swift */; };
 		42A30E762653DF430003FDAD /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A30E732653DF430003FDAD /* Script.swift */; };
@@ -92,7 +91,6 @@
 		42A30E622653DF250003FDAD /* ScanDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDelegate.swift; sourceTree = "<group>"; };
 		42A30E632653DF250003FDAD /* ScanDocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
 		42A30E642653DF250003FDAD /* TextRecognitionScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextRecognitionScan.swift; sourceTree = "<group>"; };
-		42A30E6A2653DF2E0003FDAD /* TabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		42A30E6B2653DF2E0003FDAD /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		42A30E6C2653DF2E0003FDAD /* MiniPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniPlayer.swift; sourceTree = "<group>"; };
 		42A30E732653DF430003FDAD /* Script.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Script.swift; sourceTree = "<group>"; };
@@ -243,7 +241,6 @@
 		42A30E692653DF2E0003FDAD /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				42A30E6A2653DF2E0003FDAD /* TabBar.swift */,
 				42A30E6B2653DF2E0003FDAD /* BlurView.swift */,
 				42A30E6C2653DF2E0003FDAD /* MiniPlayer.swift */,
 				4223EAA226595504004AB327 /* ProductPlayer.swift */,
@@ -420,7 +417,6 @@
 				42971F2B26579417008E3B73 /* Main.swift in Sources */,
 				422AF460266A7C8F00802DC6 /* SentenceViewModal.swift in Sources */,
 				42A30E682653DF250003FDAD /* TextRecognitionScan.swift in Sources */,
-				42A30E6E2653DF2E0003FDAD /* TabBar.swift in Sources */,
 				4223EAA7265A3B07004AB327 /* SentenceEditRow.swift in Sources */,
 				42A30E2C2653DEFA0003FDAD /* HCIProjectApp.swift in Sources */,
 				4204B12D26731DE60035EB6D /* VisualBarView.swift in Sources */,
