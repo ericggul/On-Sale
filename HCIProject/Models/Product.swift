@@ -56,9 +56,9 @@ extension Product{
         [
             Product(name: "파인애플", initialPrice: "30000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.g, origin: "캘리포니아",
                     sentences:
-                        [Script(sentence: "삼겹살, 항정살, 가브리살, 무한제공.", type: sentenceType.i, isSelected: true),
-                         Script(sentence: "삼겹살, 항정살, 가브리살, 제공.", type: sentenceType.p, isSelected: true),
-                         Script(sentence: "삼겹살, 항정살, 가브리제공.", type: sentenceType.i, isSelected: true)],
+                        [Script(sentence: "삼겹살, 항정살, 가브리살, 무한제공.", type: sentenceType.i, isSelected: true, isShown: true),
+                         Script(sentence: "삼겹살, 항정살, 가브리살, 제공.", type: sentenceType.p, isSelected: true,  isShown: true),
+                         Script(sentence: "삼겹살, 항정살, 가브리제공.", type: sentenceType.i, isSelected: true,  isShown: true)],
                     nowPlaying: true
                     , volume:  1.0
                     ,adjustable: 0.5, speed: 3, pitch: 3

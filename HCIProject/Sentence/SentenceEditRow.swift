@@ -57,7 +57,7 @@ struct SentenceEditRow: View {
 
 struct SentenceEditRow_Previews: PreviewProvider {
     static var previews: some View {
-        SentenceEditRow(script: .constant(Script(sentence: "자, 여기 청주산 사과 하나 세일입니다", type: sentenceType.i, isSelected: true)))
+        SentenceEditRow(script: .constant(Script(sentence: "자, 여기 청주산 사과 하나 세일입니다", type: sentenceType.i, isSelected: true, isShown: true)))
     }
 }
 

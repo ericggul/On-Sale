@@ -49,7 +49,7 @@ struct SentenceRow: View {
 
 struct SentenceRow_Previews: PreviewProvider {
     static var previews: some View {
-        SentenceRow(script: .constant(Script(sentence: "자, 여기 청주산 사과 하나 세일입니다", type: sentenceType.i, isSelected: true)))
+        SentenceRow(script: .constant(Script(sentence: "자, 여기 청주산 사과 하나 세일입니다", type: sentenceType.i, isSelected: true, isShown: true)))
     }
 }
 
