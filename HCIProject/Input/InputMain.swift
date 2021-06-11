@@ -21,9 +21,9 @@ struct InputMain: View {
                 
 
                 NavigationLink(destination:
-                                SentenceList(product: $product
-                                             , isActive: $isActive)
-                                .onAppear{product.update(from: datatoinherit)}, isActive: $updated
+                    SentenceList(product: $product
+                                 , isActive: $isActive)
+                    .onAppear{product.update(from: datatoinherit)}, isActive: $updated
                 ){
                     NextButton(isLast: .constant(false))
                     .onTapGesture {

@@ -14,34 +14,68 @@ struct SentenceList: View {
     @State private var updated = false
     @Binding var isActive: Bool
     
-    private var selectedScripts: [Script]{scripts.filter{
+    @State private var filler = true
+    @State private var accentColor = Color(red: 13/255, green: 71/255, blue: 34/255)
+    
+    private var shownScripts: [Script]{scripts.filter{
+        script in script.isShown
+    }
+    }
+
+    private var selectedScripts: [Script]{shownScripts.filter{
         script in script.isSelected
     }
     }
     
+    
     var body: some View {
             VStack{
+                
                 List{
                     Section(header:
-                                Text("상품관련 문구")
-                                .font(.headline)){
-                        ForEach(scripts.filter{script in
+                                HStack{
+                                    Text("상품관련 문구")
+                                    .font(.headline)
+                                    Image(systemName: "questionmark.circle.fill")
+                                        .font(.headline)
+                                }
+                                ){
+                        ForEach(shownScripts.filter{script in
                             script.type == sentenceType.i
                         }){script in
                             SentenceEditRow(script: binding(for: script))
                         }
-//                        .onMove(perform: move)
                     }
                     
-                    Section(header: Text("가격관련 문구")
-                                .font(.headline)){
-                        ForEach(scripts.filter{script in
+                    Section(header: HStack{
+                        Text("가격관련 문구")
+                            .font(.headline)
+                        Image(systemName: "questionmark.circle.fill")
+                            .font(.headline)
+                        
+                    }){
+                        ForEach(shownScripts.filter{script in
                             script.type == sentenceType.p
                         }){script in
                             SentenceEditRow(script: binding(for: script))
                         }
+                    }
+                    
+                    Section(header:
+                            HStack{
+                                Text("추임새")
+                                .font(.headline)
+                                Image(systemName: "questionmark.circle.fill")
+                                    .font(.headline)
+                            }
+                    ){
+                        ForEach(shownScripts.filter{script in
+                            script.type == sentenceType.f                        }){script in
+                            SentenceEditRow(script: binding(for: script))
+                        }
 //                        .onMove(perform: move)
                     }
+
                     HStack{
                         Image(systemName: "plus")
                         Text("문장 추가하기")
@@ -49,8 +83,8 @@ struct SentenceList: View {
                 }
                 .listStyle(GroupedListStyle())
                 
-                Text("\(selectedScripts.count)개 문장 선택됨")
-                //To Fix: How to go back to main using navigation?
+                Text("\(selectedScripts.count)/\(shownScripts.count) 종류 선택됨")
+                
                 NavigationLink(
                     destination:
                         SoundPage(product: $product
@@ -73,6 +107,8 @@ struct SentenceList: View {
         }
         return $scripts[scriptIndex]
     }
+    
+
     
 }
 

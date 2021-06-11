@@ -28,6 +28,16 @@ struct SentenceEditRow: View {
                     .foregroundColor(vm.isSpeaking ? .green : .gray)
                     .font(.title)
             }
+//            TextField("Hello World", text: $script.sentence)
+//                .foregroundColor(.primary)
+//            Image(systemName: script.isSelected ? "checkmark.circle" : "circle")
+//                .resizable()
+//                .frame(width: 24, height: 24)
+//
+//                .onTapGesture {
+//                    script.isSelected.toggle()
+//                }
+//                .padding(.trailing, 1)
             Toggle(isOn: $script.isSelected){
                 TextField("Hello World", text: $script.sentence)
                     .foregroundColor(.primary)

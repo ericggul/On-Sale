@@ -27,7 +27,7 @@ struct MiniPlayer: View {
                 if expand{Spacer(minLength: 0)}
                 
                 if !expand{
-                    Image("p1")
+                    Image(product.name)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 70, height: 70)

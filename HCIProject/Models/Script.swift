@@ -33,16 +33,16 @@ func generateSentence(product: Product) -> [Script]{
     return(
         [
          Script(sentence: "\(product.origin)에서온 \(product.name) 맛있습니다.", type: sentenceType.i, isSelected: true, isShown: true),
-         Script(sentence: "오늘 \(product.name) 과즙이 풍부합니다. 맛있어요.", type: sentenceType.i, isSelected: true, isShown: true),
+         Script(sentence: "오늘 \(product.name) 과즙이 풍부합니다.", type: sentenceType.i, isSelected: true, isShown: true),
          
          Script(sentence: "\(product.name) \(product.unitQuanity)\(product.unitMeasure)에 \(product.discountPrice)원입니다.", type: sentenceType.p, isSelected: true, isShown: true),
-         Script(sentence: "\(product.name) \((product.initialPrice))원에서 \(product.discountPrice)원 세일입니다.", type: sentenceType.p, isSelected: true, isShown: true),
+         Script(sentence: "\((product.initialPrice))원에서 \(product.discountPrice)원 세일입니다.", type: sentenceType.p, isSelected: true, isShown: true),
             
-        Script(sentence: "한번만 드셔보세요.", type: sentenceType.f,isSelected: true, isShown: true),
+        Script(sentence: "한번만 드셔보세요.", type: sentenceType.f,isSelected: true, isShown: false),
         Script(sentence: "여기서 더 싸게는 안되는거에요.", type: sentenceType.f,isSelected: true, isShown: true),
         Script(sentence: "하나만 팔고 집에 갑시다!", type: sentenceType.f,isSelected: true, isShown: true),
         Script(sentence: "저는 기계여서 못먹어보는게 한이네요.", type: sentenceType.f,isSelected: true, isShown: true),
-        Script(sentence: "이걸 안사면 흑우 아니여?.", type: sentenceType.f,isSelected: true, isShown: true),
+        Script(sentence: "이걸 안사면 흑우 아니여?", type: sentenceType.f,isSelected: true, isShown: true),
             
             
             
@@ -52,7 +52,7 @@ func generateSentence(product: Product) -> [Script]{
         Script(sentence: "\(product.name) \(product.origin) 세일", type: sentenceType.i, isSelected: true, isShown: false),
             
          Script(sentence: "\(product.origin)에서온 \(product.name) 있습니다. 얼른 사가세요.", type: sentenceType.i, isSelected: true, isShown: false),
-         
+            Script(sentence: "\(product.name) \((product.initialPrice))원에서 \(product.discountPrice)원 세일입니다.", type: sentenceType.p, isSelected: true, isShown: false),
          Script(sentence: "\(product.name) \(product.unitQuanity)\(product.unitMeasure)에 \(product.discountPrice)원 세일", type: sentenceType.p, isSelected: true, isShown: false),
          Script(sentence: "\(product.name) \(product.discountPrice)원입니다 세일합니다", type: sentenceType.p, isSelected: true, isShown: false),
          Script(sentence: "맛있는 \(product.name) \(product.discountPrice)원이에요", type: sentenceType.p, isSelected: true, isShown: false),

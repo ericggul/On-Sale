@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ProductCard: View {
     let product: Product
+
     var body: some View {
         VStack(alignment: .leading, spacing: 5){
             
             Text("25분전")
                 .foregroundColor(.secondary)
-            Image("p1")
+            Image(product.name)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: (UIScreen.main.bounds.width - 70)/2, height: 180, alignment: .center)

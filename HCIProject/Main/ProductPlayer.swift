@@ -12,6 +12,17 @@ struct ProductPlayer: View {
     @State private var pitch = 4
     
     @Binding var isActive: Bool
+    
+    
+    private var shownScripts: [Script]{product.sentences.filter{
+        script in script.isShown
+    }
+    }
+
+    private var selectedScripts: [Script]{shownScripts.filter{
+        script in script.isSelected
+    }
+    }
 
     var body: some View {
         VStack{
@@ -23,7 +34,7 @@ struct ProductPlayer: View {
             }
             
             HStack(spacing: 10){
-                Image("p1")
+                Image(product.name)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
@@ -56,7 +67,7 @@ struct ProductPlayer: View {
             
             //Sentence Section
                 List{
-                    ForEach(product.sentences){sentence in
+                    ForEach(shownScripts){sentence in
                         SentenceEditRow(script: binding(for: sentence))
                     }
                 }.listStyle(GroupedListStyle())
@@ -76,8 +87,6 @@ struct ProductPlayer: View {
                         Text("\(product.pitch)/5")
                         
                     }
-                    TextField("wet", text: $product.name)
-                    Text(product.name)
                 }
                 
                 Section(header: Text("음성 변화/볼륨")){
@@ -102,6 +111,11 @@ struct ProductPlayer: View {
         .navigationBarItems(trailing: HStack{
             EditButton(destination: InputMain(product: $product, isActive: .constant(false)))
         })
+        .onAppear(
+            perform:{
+                product.sentences = generateSentence(product: product)
+            }
+        )
     }
     
     var filteredScript: [Script]{product.sentences.filter{
@@ -109,14 +123,67 @@ struct ProductPlayer: View {
     }
     }
     
-
+    var nonFillerScript: [Script] {product.sentences.filter{
+        script in script.type != sentenceType.f
+    }
+    }
+    
+    var fillerScript: [Script] {product.sentences.filter{
+        script in script.type == sentenceType.f
+    }
+    }
+    
+    func wordChange(sentence: String) -> String{
+        let newSentence = sentence.replacingOccurrences(of: "g", with: "그램")
+        return newSentence
+        
+    }
+    
+    var stepWords: [String] = [
+        "자, ",
+        "자 아주머니 ",
+        "에헴, "
+    ]
+    
+    var finishWords: [String] = [
+        "맛있어요",
+        "잡숴 보세요"
+    ]
     let audioSession = AVAudioSession.sharedInstance()
+    
+    func nonRedundantRandomGenerator(number: Int, length: Int) -> [Int] {
+        var returnArray: [Int] = []
+        for n in 0..<length{
+            var thisNumber: Int
+            repeat{
+                thisNumber = Int.random(in: 0..<number)
+            } while n>0 && thisNumber==returnArray[n-1]
+            returnArray.append(thisNumber)
+        }
+        return returnArray
+    }
 
     func aggregateSentence() -> [String]{
+        let t = nonRedundantRandomGenerator(number: nonFillerScript.count, length: nonFillerScript.count*1000)
         var outputsen : [String] = []
-        for number in 0..<filteredScript.count{
-            outputsen.append(filteredScript[number].sentence)
+        
+        
+        for number in 0..<nonFillerScript.count*1000{
             
+            var thisString = wordChange(sentence: nonFillerScript[t[number]].sentence)
+            
+            let randomFiller = Int.random(in: 0..<fillerScript.count)
+            thisString = fillerScript[randomFiller].sentence + thisString
+            
+            if 2 == Int.random(in: 0..<4) {
+                thisString = stepWords[0] + thisString
+            } else if 2 == Int.random(in: 0..<8) {
+                thisString = stepWords[1] + thisString
+            } else if 2 == Int.random(in: 0..<8) {
+                thisString = stepWords[2] + thisString
+            }
+                    
+            outputsen.append(thisString)
         }
         return outputsen
     }
@@ -129,7 +196,7 @@ struct ProductPlayer: View {
             let utterance = AVSpeechUtterance(string: derivedSentences[number])
             
             //default 0.5,
-            utterance.rate = Float(Float.random(in: (0.5+(Float(speed)-3)*0.05-adjustable*0.2)..<(0.5+(Float(speed)-3)*0.05+adjustable*0.2)+0.01))
+            utterance.rate = Float(Float.random(in: (0.45+(Float(speed)-3)*0.05-adjustable*0.12)..<(0.45+(Float(speed)-3)*0.05+adjustable*0.1)+0.01))
             //Pitch: 0.5-2, default 1
             utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(product.pitch)-3)*0.1-adjustable*0.25)..<(1+(Float(product.pitch)-3)*0.1+adjustable*0.25)))
             //Volume: 0.1-1, default 1
@@ -139,12 +206,15 @@ struct ProductPlayer: View {
             speak(utterance, isPlaying: testBoolean)
         }
     }
+
+    var synthesizer = AVSpeechSynthesizer()
+    
     
     func speak(_ utterance: AVSpeechUtterance, isPlaying: Bool) {
         utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
-        if(!isPlaying){
+        if(isPlaying){
             if(synthesizer.isSpeaking){
-                self.synthesizer.pauseSpeaking(at: AVSpeechBoundary.immediate)
+                self.synthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
                 print("fired");
             }
         }
@@ -155,16 +225,6 @@ struct ProductPlayer: View {
                 self.synthesizer.speak(utterance)
             }
         }
-    }
-    
-    
-
-    var synthesizer = AVSpeechSynthesizer()
-    
-    
-    func speak(_ utterance: AVSpeechUtterance) {
-        utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
-        self.synthesizer.speak(utterance)
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {

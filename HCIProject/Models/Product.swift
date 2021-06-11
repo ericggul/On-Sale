@@ -54,7 +54,7 @@ struct Product:  Hashable, Identifiable, Codable {
 extension Product{
     static var initial: [Product]{
         [
-            Product(name: "파인애플", initialPrice: "30000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.g, origin: "캘리포니아",
+            Product(name: "사과", initialPrice: "7800", discountPrice: "4900", unitQuanity: "10", unitMeasure : Measure.qty, origin: "청주",
                     sentences:
                         [Script(sentence: "삼겹살, 항정살, 가브리살, 무한제공.", type: sentenceType.i, isSelected: true, isShown: true),
                          Script(sentence: "삼겹살, 항정살, 가브리살, 제공.", type: sentenceType.p, isSelected: true,  isShown: true),
@@ -63,18 +63,28 @@ extension Product{
                     , volume:  1.0
                     ,adjustable: 0.5, speed: 3, pitch: 3
             ),
-            Product(name: "올림픽", initialPrice: "27000", discountPrice: "20000", unitQuanity: "100", unitMeasure : Measure.qty, origin: "캘리포니아", nowPlaying: false
+            Product(name: "파프리카", initialPrice: "27000", discountPrice: "20000", unitQuanity: "100", unitMeasure : Measure.g, origin: "헝가리", nowPlaying: false
                     , volume: 1.0
                    , adjustable: 0.5, speed: 3, pitch: 3
             ),
-            Product(name: "구렛나루", initialPrice: "32000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.qty, origin: "캘리포니아", nowPlaying: false
+            Product(name: "바나나", initialPrice: "5800", discountPrice: "5000", unitQuanity: "270", unitMeasure : Measure.g, origin: "필리핀", nowPlaying: false
                     , volume:  1.0
                     ,adjustable: 0.5, speed: 3, pitch: 3
             ),
-            Product(name: "사과", initialPrice: "30000", discountPrice: "24000", unitQuanity: "100", unitMeasure : Measure.g, origin: "캘리포니아", nowPlaying: false
-                    , volume: 1.0
-                   , adjustable: 0.5, speed: 3, pitch: 3
-            )
+            Product(name: "블루베리", initialPrice: "32000", discountPrice: "27000", unitQuanity: "80", unitMeasure : Measure.g, origin: "스코트랜드", nowPlaying: false
+                    , volume:  1.0
+                    ,adjustable: 0.5, speed: 3, pitch: 3
+            ),
+            Product(name: "산딸기", initialPrice: "32000", discountPrice: "27000", unitQuanity: "100", unitMeasure : Measure.g, origin: "나주", nowPlaying: false
+                    , volume:  1.0
+                    ,adjustable: 0.5, speed: 3, pitch: 3
+            ),
+            Product(name: "자두", initialPrice: "32000", discountPrice: "27000", unitQuanity: "100", unitMeasure : Measure.g, origin: "영월", nowPlaying: false
+                    , volume:  1.0
+                    ,adjustable: 0.5, speed: 3, pitch: 3
+            ),
+
+
         ]
     }
 }

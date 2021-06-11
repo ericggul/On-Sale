@@ -14,6 +14,17 @@ struct MiniPlayerProduct: View {
     @State private var isPresented: Bool = false
     
     @Binding var isActive: Bool
+    
+    private var shownScripts: [Script]{product.sentences.filter{
+        script in script.isShown
+    }
+    }
+
+    private var selectedScripts: [Script]{shownScripts.filter{
+        script in script.isSelected
+    }
+    }
+
 
     
     var body: some View {
@@ -31,7 +42,7 @@ struct MiniPlayerProduct: View {
             HStack(spacing: 10){
                 
                 
-                Image("p1")
+                Image(product.name)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
@@ -66,7 +77,7 @@ struct MiniPlayerProduct: View {
             //Sentence Section
                 List{
                     
-                        ForEach(product.sentences){sentence in
+                        ForEach(shownScripts){sentence in
                             SentenceRow(script: binding(for: sentence))
                         }
 //                        .onMove(perform: move)

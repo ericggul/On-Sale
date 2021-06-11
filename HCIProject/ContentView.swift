@@ -17,6 +17,7 @@ struct ContentView: View {
     @State private var isActive: Bool = false
     @State private var scrolled: Bool = false
     @State var search = ""
+    @State private var newProduct = Product(name: "", initialPrice: "", discountPrice: "", unitQuanity: "", unitMeasure: Measure.g, origin: "", nowPlaying: false, volume: 1.0, adjustable: 0.5, speed: 3, pitch: 3)
         
     var filteredProduct: [Product]{products.filter{
         product in product.nowPlaying
@@ -28,60 +29,60 @@ struct ContentView: View {
     let saveAction: () -> Void
   
     var body: some View {
-            ZStack{
-                
-                ScrollView{
-                    VStack(spacing: 18){
-                        HStack(spacing: 15){
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.primary)
-                            
-                            TextField("Search", text: $search)
-                        }
-                        .padding(.vertical)
-                        .padding(.horizontal)
-                        .background(Color.primary.opacity(0.06))
-                        .cornerRadius(15)
+        ZStack{
+            ScrollView{
+                VStack(spacing: 18){
+                    HStack(spacing: 15){
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.primary)
                         
-                        LazyVGrid(columns: columns,spacing: 30){
-                            
-                            //Add New Item Slot
-                            
-                            NavigationLink(destination: InputMain(product: .constant(Product.initial[0]), isActive: $isActive),
-                                isActive: $isActive) {
-                                Main()}
-                                .isDetailLink(false)
-                            
-                            ForEach(products){thisproduct in
-                                NavigationLink(
-//                                    destination: InputMain(product: binding(for: thisproduct), isActive: $isActive), isActive: $isActive
-                                    destination: ProductPlayer(
-                                        product: binding(for: thisproduct), fromMain: .constant(true), isActive: $isActive), isActive: $isActive
-                                    
-                                            ){
-                                        ProductCard(product: thisproduct)
-                                        }.isDetailLink(false)
-                            }
+                        TextField("Search", text: $search)
+                    }
+                    .padding(.vertical)
+                    .padding(.horizontal)
+                    .background(Color.primary.opacity(0.06))
+                    .cornerRadius(15)
+                    
+                    LazyVGrid(columns: columns,spacing: 30){
+                        
+                        NavigationLink(destination: InputMain(product: $newProduct, isActive: $isActive)
+                            .onAppear{
+                                products.append(newProduct)},
+                            isActive: $isActive){
+                            Main()
                         }
-                        .padding(.bottom, 70)
-                    }.padding(10)
-                }
+                            .isDetailLink(false)
+                        
+                        
+
+                        ForEach(products){product in
+                            NavigationLink(
+                                destination: ProductPlayer(
+                                    product: binding(for: product), fromMain: .constant(true), isActive: $isActive), isActive: $isActive
+                                        ){
+                                ProductCard(product: product)
+                                    }.isDetailLink(false)
+                        }
+                    }
+                    .padding(.bottom, 70)
+                }.padding(10)
+            }
 
 //                Main(products: $products, isActive: $isActive)
-                
-                VStack{
-                    ForEach(filteredProduct){product in
-                        MiniPlayer(animation: animation, expand: $expand, product: binding(for: product), isActive: $isActive)
-                    }
+            
+            VStack{
+                ForEach(filteredProduct){product in
+                    MiniPlayer(animation: animation, expand: $expand, product: binding(for: product), isActive: $isActive)
                 }
+            }
 
-                
-            }
-            .navigationTitle("홈")
-            .onChange(of: scenePhase) { phase in
-                if phase == .inactive { saveAction() }
-            }
-            .gesture(DragGesture().onChanged(onchanged(value:)))
+            
+        }
+        .navigationTitle("홈")
+        .onChange(of: scenePhase) { phase in
+            if phase == .inactive { saveAction() }
+        }
+        .gesture(DragGesture().onChanged(onchanged(value:)))
     }
     
     
@@ -95,6 +96,7 @@ struct ContentView: View {
             scrolled = false
         }
     }
+
 
     
     private func binding(for product: Product) -> Binding<Product> {
