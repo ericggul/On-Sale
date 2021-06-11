@@ -57,21 +57,10 @@ struct SentenceList: View {
                                   , shouldPopToRootView: $isActive)
                         .onAppear{product.sentences = scripts})
                     {
-                    HStack(alignment: .bottom, content: {
-                        Text("다음")
-                            .foregroundColor(.white)
-                            .font(.title2)
-                            .bold()
-                    })
-                    .frame(width: UIScreen.main.bounds.width)
-                    .padding(.vertical)
-                    .padding(.horizontal)
-                    .background(Color(red: 21/255, green: 53/255, blue: 30/255))
-                    .ignoresSafeArea()
-                    
+                    NextButton(isLast: .constant(false))
                 }
             }
-        .navigationTitle("문장 수정")
+        .navigationTitle("2. 문장 선택 및 수정")
         .listRowInsets(EdgeInsets())
         .onAppear{
             scripts = generateSentence(product: product)

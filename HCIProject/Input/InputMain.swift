@@ -13,6 +13,7 @@ struct InputMain: View {
     @State private var thisProduct: Product = Product.initial[0]
     @State private var updated = false
     @Binding var isActive: Bool
+
     
     var body: some View {
             VStack{
@@ -24,28 +25,20 @@ struct InputMain: View {
                                              , isActive: $isActive)
                                 .onAppear{product.update(from: datatoinherit)}, isActive: $updated
                 ){
-                        HStack(alignment: .bottom, content: {
-                            Text("다음")
-                                .foregroundColor(.white)
-                                .font(.title2)
-                                .bold()
-                        })
-                        .frame(width: UIScreen.main.bounds.width)
-                        .padding(.vertical)
-                        .padding(.horizontal)
-                        .background(Color(red: 21/255, green: 53/255, blue: 30/255))
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            product.update(from: datatoinherit)
-                            updated = true
-                        }
+                    NextButton(isLast: .constant(false))
+                    .onTapGesture {
+                        product.update(from: datatoinherit)
+                        updated = true
+                    }
                 }
             }
-            .navigationTitle("품목 정보 수정")
+            .navigationTitle("1. 품목 정보 수정")
             .onAppear{
                 datatoinherit = product.hmmm
             }
         }
+
+
 }
 
 

@@ -67,10 +67,12 @@ struct ContentView: View {
 
 //                Main(products: $products, isActive: $isActive)
                 
-  
-                ForEach(filteredProduct){product in
-                    TabBar(expand: $expand, product: binding(for: product), isActive: $isActive)
+                VStack{
+                    ForEach(filteredProduct){product in
+                        TabBar(expand: $expand, product: binding(for: product), isActive: $isActive)
+                    }
                 }
+
                 
             }
             .navigationTitle("홈")

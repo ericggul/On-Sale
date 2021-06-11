@@ -11,6 +11,8 @@ struct SoundPage: View {
     @State private var speed = 4
     @State private var pitch = 4
     
+    @State private var scripts: [Script] = []
+    
     @Binding var shouldPopToRootView: Bool
     
     
@@ -62,47 +64,44 @@ struct SoundPage: View {
                 }
             }.listStyle(GroupedListStyle())
             
-            Button(
-                "완료",
-                action: {
-                    product.volume = volume
-                    product.adjustable = adjustable
-                    product.speed = speed
-                    product.pitch = pitch
-                    self.shouldPopToRootView = false
-                }
-            )
-            .foregroundColor(.white)
-            .font(.title2)
-            .frame(width: UIScreen.main.bounds.width)
-            .padding(.vertical)
-            .padding(.horizontal)
-            .background(Color(.black))
-            .ignoresSafeArea()
+            
+            NextButton(isLast:.constant(true)).onTapGesture {
+                product.volume = volume
+                product.adjustable = adjustable
+                product.speed = speed
+                product.pitch = pitch
+                self.shouldPopToRootView = false
+            }
+            
         }
-        .navigationTitle("음성 수정")
+        .navigationTitle("3. 음성 수정")
         .onAppear{
             volume = product.volume
             adjustable = product.adjustable
             speed = product.speed
             pitch = product.pitch
-            
+            scripts = generateSentence(product: product)
         }
     }
     
     let audioSession = AVAudioSession.sharedInstance()
     
-    var filteredScript: [Script]{product.sentences.filter{
+    var filteredScript: [Script]{scripts.filter{
         script in script.isSelected
     }
+    }
+    
+    func wordChange(sentence: String) -> String{
+        let newSentence = sentence.replacingOccurrences(of: "g", with: "그램")
+        return newSentence
+        
     }
 
     
     func aggregateSentence() -> [String]{
         var outputsen : [String] = []
         for number in 0..<filteredScript.count{
-            outputsen.append(filteredScript[number].sentence)
-            
+            outputsen.append(wordChange(sentence: filteredScript[number].sentence))
         }
         return outputsen
     }
@@ -116,9 +115,9 @@ struct SoundPage: View {
             let utterance = AVSpeechUtterance(string: derivedSentences[number])
             
             //default 0.5,
-            utterance.rate = Float(Float.random(in: (0.5+(Float(speed)-3)*0.05-adjustable*0.2)..<(0.5+(Float(speed)-3)*0.05+adjustable*0.2)+0.01))
+            utterance.rate = Float(Float.random(in: (0.5+(Float(speed)-3)*0.05-adjustable*0.15)..<(0.5+(Float(speed)-3)*0.05+adjustable*0.15)+0.01))
             //Pitch: 0.5-2, default 1
-            utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(pitch)-3)*0.1-adjustable*0.25)..<(1+(Float(pitch)-3)*0.1+adjustable*0.25)))
+            utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(pitch)-3)*0.1-adjustable*0.2)..<(1+(Float(pitch)-3)*0.1+adjustable*0.2)))
             //Volume: 0.1-1, default 1
             utterance.volume = Float(Float.random(in: (1-adjustable*0.1)*volume..<volume))
             utterance.postUtteranceDelay = 0.5

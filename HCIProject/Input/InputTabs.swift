@@ -20,7 +20,6 @@ struct InputTabs: View {
                         .frame(width: 70, alignment: .leading)
                     TextField("나주",
                               text: $productData.origin)
-                        .keyboardType(.numberPad)
                         .font(.title).padding(7)
                 }
                 Divider()

@@ -32,6 +32,17 @@ func generateSentence(product: Product) -> [Script]{
          
          Script(sentence: "\(product.name) \(product.unitQuanity)\(product.unitMeasure)에 \(product.discountPrice)원입니다.", type: sentenceType.p, isSelected: true),
          Script(sentence: "\(product.name) \(String(describing: product.initialPrice))원에서 \(product.discountPrice)원 세일입니다.", type: sentenceType.p, isSelected: true),
+         Script(sentence: "자아아아.", type: sentenceType.p, isSelected: true)
+        ]
+    )
+}
+
+
+
+func advancedGenerateSentence(script: Script) -> [String]{
+    return(
+        [
+            "자, 아주머니 한번 잡수고 가세요."
         ]
     )
 }
