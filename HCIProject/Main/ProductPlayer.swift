@@ -136,12 +136,14 @@ struct ProductPlayer: View {
     var stepWords: [String] = [
         "자, ",
         "자 아주머니 ",
-        "에헴, "
+        "에헴, ",
+        "안녕하세요 고객님,   ",
+        "자 고객님,    ",
     ]
     
     var finishWords: [String] = [
-        "맛있어요",
-        "잡숴 보세요"
+        "맛있어요, ",
+        "  한번만 잡숴 보세요"
     ]
     let audioSession = AVAudioSession.sharedInstance()
     
@@ -173,6 +175,12 @@ struct ProductPlayer: View {
             } else if 2 == Int.random(in: 0..<8) {
                 thisString = stepWords[2] + thisString
             }
+            else if 2 == Int.random(in: 0..<8) {
+                thisString = stepWords[3] + thisString
+            }
+            else if 2 == Int.random(in: 0..<8) {
+                thisString = stepWords[4] + thisString
+            }
             outputsen.append(thisString)
         }
         return outputsen
@@ -190,7 +198,7 @@ struct ProductPlayer: View {
             utterance.rate = Float(Float.random(in: (0.45+(Float(speed)-3)*0.05-adjustable*0.12)..<(0.45+(Float(speed)-3)*0.05+adjustable*0.1)+0.01))
             //Pitch: 0.5-2, default 1
             utterance.pitchMultiplier = Float(Float.random(in: (1+(Float(product.pitch)-3)*0.1-adjustable*0.25)..<(1+(Float(product.pitch)-3)*0.1+adjustable*0.25)))
-            utterance.postUtteranceDelay = Double(Float.random(in: (3-adjustable*1)*volume..<(3+adjustable*1)*volume))
+            utterance.postUtteranceDelay = Double(Float.random(in: (1-adjustable*1)*volume..<(1+adjustable*1)*volume))
             speak(utterance, isPlaying: testBoolean)
         }
     }

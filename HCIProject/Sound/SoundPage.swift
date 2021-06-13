@@ -62,7 +62,11 @@ struct SoundPage: View {
                         Text("볼륨 큼  ")
                     }
                 }
+                Section(header: Text("음성 변화는 고객에게 전달되는 음성의 다채로움을 위해, 음성의 빠르기와 높이를 변화시키는 정도입니다. 많을수록 음성의 빠르기와 높이의 변동성이 더 커집니다.")){
+                    
+                }
             }.listStyle(GroupedListStyle())
+            
             
             
             NextButton(isLast:.constant(true)).onTapGesture {
