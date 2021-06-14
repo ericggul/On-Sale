@@ -2,8 +2,6 @@
 TTS based Promotional Assistant for Offline Supermarkets.<br />
 2021 Human Computer Interaction Class Jeanyoon Choi Project.
 
-![iphone-12--product-red-1](https://user-images.githubusercontent.com/57379903/121844953-b6d49f00-cd1f-11eb-8d00-294e02a56678.png)
-
 # Interface
 
 Step 1. Product Info Input |  Step 2. Sentence Selection | Step 3. Audio Settings Adjustement | Product Play Screen
