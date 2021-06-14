@@ -12,4 +12,4 @@ Step 1. Product Info Input |  Step 2. Sentence Selection | Step 3. Audio Setting
 
 # Project Process
 
-Ideation -> Prototyping -> Evaluation
+Ideation -> Understanding Users' -> Prototyping -> Implementation -> Evaluation
